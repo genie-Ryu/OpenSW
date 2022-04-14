@@ -105,7 +105,7 @@ public class searcher {
 //		for(Integer key : keySetList) {
 //			System.out.println("key : " + key + " / " + "value : " + rankMap.get(key));
 //		}
-		//
+
 		// 출력
 		// 유사도를 체크한 횟수
 		int count = 0;
