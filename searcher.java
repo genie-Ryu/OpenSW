@@ -28,7 +28,7 @@ public class searcher {
 		this.query = query;
 	}
 	
-	public void CalcSim() throws Exception {
+	public double[] InnerProduct() throws Exception {
 		// 쿼리 String 에 있는 키워드와 빈도수 저장 <keyword, TF>
 		HashMap<String, Integer> queryMap = new HashMap<>();
 		
@@ -86,47 +86,8 @@ public class searcher {
 				}
 			}
 		}
-		
-//		for(double d : q_id) {
-//			System.out.print(d + " ");
-//		}
-		
-		// 4) 유사도 순위 출력
-		// rankMap = <문서id, 각 문서에 해당하는 q_id>
-		HashMap<Integer, Double> rankMap = new HashMap<>();
-		for(int i = 0; i < q_id.length; i++) {
-			rankMap.put(i, q_id[i]);
-		}
-		// rankMap 내림차순 정렬
-		// 내림차순된 키값을 가진 list
-		List<Integer> keySetList = new ArrayList<>(rankMap.keySet());
-		Collections.sort(keySetList, (o1, o2) -> (rankMap.get(o2).compareTo(rankMap.get(o1))));
-		
-//		for(Integer key : keySetList) {
-//			System.out.println("key : " + key + " / " + "value : " + rankMap.get(key));
-//		}
+		return q_id;
 
-		// 출력
-		// 유사도를 체크한 횟수
-		int count = 0;
-		for(Integer key : keySetList) {		// key = 문서의 index 번호와 같음
-			count++;
-			// 1. 모든 문서 유사도가 0인 경우
-			if(count == 1 && rankMap.get(key) == 0.0) {
-				System.out.println("검색된 문서가 없습니다.");
-				break;
-			}
-			// 2. 유사도 큰 상위 3개 문서까지만 출력
-			if(count == 4) {
-				break;
-			}
-			// 3. 유사도가 0.0 이 아닌 문서가 2개 이하일 때
-			if(rankMap.get(key) == 0.0) {
-				break;
-			}
-			System.out.print(returnDocName(Integer.toString(key)) + " ");
-		}
-		
 	}
 	
 	// document 의 id 를 입력 받아 document 의 제목을 리턴하는 메소드
