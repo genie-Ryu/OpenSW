@@ -51,11 +51,9 @@ public class searcher {
 		// System.out.println("읽어온 객체의 type → " + object.getClass());
 		// 해당 타입에 맞게 형변환 하여 object 담기
 		HashMap hashMap = (HashMap) object;
-		// 쿼리와 각 문서의 유사도 값 담는 변수, 초기화
-		double[] q_id = new double[5];
-		for(int i = 0; i < 5; i++) {
-			q_id[i] = 0.0;
-		}
+		double[] q_id_final = InnerProduct();
+	
+		
 		double[] vecA = new double[5];
 		for(int i = 0; i < 5; i++) {
 			vecA[i] = 0.0;
@@ -73,6 +71,7 @@ public class searcher {
 		// 문서 개수 만큼 반복
 		for(int i = 0; i < 5; i++) {
 			Iterator<String> it1 = queryMap.keySet().iterator();
+			
 			while(it1.hasNext()) {
 				String key1 = it1.next();
 				int value1 = queryMap.get(key1);
@@ -92,8 +91,6 @@ public class searcher {
 //					}
 //					System.out.println();
 //					System.out.println(post2[i + 1]);
-
-					q_id[i] += (value1 * Double.parseDouble(post2[i + 1]));
 					
 					vecA[i] += (value1)*(value1); 
 					vecB[i] += (Double.parseDouble(post2[i + 1]))*(Double.parseDouble(post2[i + 1]));
@@ -102,7 +99,7 @@ public class searcher {
 			}
 			vecA[i] = Math.sqrt(vecA[i]);
 			vecB[i] = Math.sqrt(vecB[i]);
-			cosSim[i] = q_id[i] / (vecA[i] * vecB[i]);
+			cosSim[i] = q_id_final[i] / (vecA[i] * vecB[i]);
 		}
 
 //		for(double d : q_id) {
@@ -147,6 +144,10 @@ public class searcher {
 		
 	}
 	
+	private double[] InnerProduct() {
+			return null;
+		}
+
 	// document 의 id 를 입력 받아 document 의 제목을 리턴하는 메소드
 	public String returnDocName(String docID) throws Exception {
 		Document document = getXML(new File("./collection.xml"));
