@@ -28,7 +28,7 @@ public class searcher {
 		this.query = query;
 	}
 	
-	public void CalcSim() throws Exception {
+		public void CalcSim() throws Exception {
 		// 쿼리 String 에 있는 키워드와 빈도수 저장 <keyword, TF>
 		HashMap<String, Integer> queryMap = new HashMap<>();
 		
@@ -56,7 +56,18 @@ public class searcher {
 		for(int i = 0; i < 5; i++) {
 			q_id[i] = 0.0;
 		}
-		
+		double[] vecA = new double[5];
+		for(int i = 0; i < 5; i++) {
+			vecA[i] = 0.0;
+		}
+		double[] vecB = new double[5];
+		for(int i = 0; i < 5; i++) {
+			vecB[i] = 0.0;
+		}
+		double[] cosSim = new double[5];
+		for(int i = 0; i < 5; i++) {
+			cosSim[i] = 0.0;
+		}
 		
 		// 3) 쿼리 키워드들의 각 문서와의 유사도 계산
 		// 문서 개수 만큼 반복
@@ -81,21 +92,28 @@ public class searcher {
 //					}
 //					System.out.println();
 //					System.out.println(post2[i + 1]);
-					
+
 					q_id[i] += (value1 * Double.parseDouble(post2[i + 1]));
+					
+					vecA[i] += (value1)*(value1); 
+					vecB[i] += (Double.parseDouble(post2[i + 1]))*(Double.parseDouble(post2[i + 1]));
+					
 				}
 			}
+			vecA[i] = Math.sqrt(vecA[i]);
+			vecB[i] = Math.sqrt(vecB[i]);
+			cosSim[i] = q_id[i] / (vecA[i] * vecB[i]);
 		}
-		
+
 //		for(double d : q_id) {
 //			System.out.print(d + " ");
 //		}
-		
+
 		// 4) 유사도 순위 출력
 		// rankMap = <문서id, 각 문서에 해당하는 q_id>
 		HashMap<Integer, Double> rankMap = new HashMap<>();
-		for(int i = 0; i < q_id.length; i++) {
-			rankMap.put(i, q_id[i]);
+		for(int i = 0; i < cosSim.length; i++) {
+			rankMap.put(i, cosSim[i]);
 		}
 		// rankMap 내림차순 정렬
 		// 내림차순된 키값을 가진 list
@@ -105,7 +123,7 @@ public class searcher {
 //		for(Integer key : keySetList) {
 //			System.out.println("key : " + key + " / " + "value : " + rankMap.get(key));
 //		}
-
+		
 		// 출력
 		// 유사도를 체크한 횟수
 		int count = 0;
@@ -147,5 +165,4 @@ public class searcher {
 		document.getDocumentElement().normalize();
 		return document;
 	}
-
 }
