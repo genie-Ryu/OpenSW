@@ -5,6 +5,7 @@ public class kuir {
 		String command = args[0];   
 		String path = args[1];
 		
+		
 		if(command.equals("-c")) {
 			makeCollection collection = new makeCollection(path);
 			collection.makeXml();
