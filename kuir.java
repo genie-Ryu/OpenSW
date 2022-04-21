@@ -23,8 +23,15 @@ public class kuir {
 				searcher searcher = new searcher(path, query);
 				searcher.CalcSim();
 			}
+		} else if(command.equals("-m")) { 
+			if(args[2].equals("-q")) {
+				String query = args[3];
+				MidTerm midterm = new MidTerm(path, query);
+				midterm.showSnippet();
+			}
 		} else {
 			System.out.println("잘못된 명령어입니다.");
 		}
 	}
 }
+
